@@ -353,6 +353,40 @@ fix the git error issues.]
 
 ---
 
+### [2026-05-02] — [Track prompt log and untrack env files]
+- **Tool:** opencode
+- **Feature/Task:** [Keep `prompts_log.md` tracked while fixing `.env*` handling in git]
+- **Prompt:** > [why did you stop tracking prompts ? continue to track it and do thsi ]
+- **Result/Notes:** [Kept `prompts_log.md` tracked, added `.env` and `.env.*` ignore rules, and removed the committed environment files from the git index so local copies remain on disk but stop being tracked.] 
+
+---
+
+### [2026-05-02] — [Remove broken skills submodules]
+- **Tool:** opencode
+- **Feature/Task:** [Stop CI from trying to initialize missing skill submodules under `skills-docs`]
+- **Prompt:** > [+ '[' false '=' true ]
++ '[' false '=' true ]
++ '[' false '=' true ]
++ CHECKOUT_DIR=/workspace/output/
++ '[' true '=' true ]
++ cleandir
++ '[' -d /workspace/output/ ]
++ rm -rf /workspace/output//lost+found
++ rm -rf '/workspace/output//.[!.]*'
++ rm -rf '/workspace/output//..?*'
++ test -z
++ test -z
++ test -z
++ git config --global --add safe.directory /workspace/output
++ /ko-app/git-init ** '-revision=main' '-refspec=' '-path=/workspace/output/' '-sslVerify=true' '-submodules=true' '-depth=1' '-sparseCheckoutDirectories='
+{"level":"info","ts":1777748261.2476847,"caller":"git/git.go:176","msg":"Successfully cloned ** @ ce6b035276b17a767872d7fbce8d4f7e50b643e5 (grafted, HEAD, origin/main) in path /workspace/output/"}
+{"level":"error","ts":1777748261.354916,"caller":"git/git.go:53","msg":"Error running git [submodule update --recursive --init --depth=1]: exit status 128\nfatal: No url found for submodule path 'skills-docs/anthropic-skills' in **
+{"level":"fatal","ts":1777748261.3552818,"caller":"git-init/main.go:54","msg":"Error fetching git repository: exit status **
+there is still an error remove the anthropic skills or any skills in the directory that is fetched put them inside gitignore.]
+- **Result/Notes:** [Removed the broken tracked submodule entries under `skills-docs` from the git index and added the fetched skill repository folders to `.gitignore`, leaving only the normal tracked docs files in `skills-docs`.]
+
+---
+
 ### [2026-05-02] — [Session handoff summary]
 - **Tool:** opencode
 - **Feature/Task:** [Summarize progress and generate a continuation prompt for a new session]
