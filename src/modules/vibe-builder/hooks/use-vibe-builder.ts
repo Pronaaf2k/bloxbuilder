@@ -13,7 +13,6 @@ import {
   updateSitePage,
   updateSitePageLayout,
 } from '../services/vibe-builder.service';
-import type { GraphQLClient } from '@/lib/graphql-client';
 import type {
   AddSitePageParams,
   AddSitePageLayoutParams,
@@ -30,33 +29,33 @@ export const VIBE_BUILDER_QUERY_KEYS = {
   sitePageLayouts: 'vibe-builder-site-page-layouts',
 } as const;
 
-export const useGetSites = (params: PaginationParams, client?: GraphQLClient) => {
+export const useGetSites = (params: PaginationParams) => {
   return useGlobalQuery({
     suppressAuthRedirect: true,
-    queryKey: [VIBE_BUILDER_QUERY_KEYS.sites, params, client ? 'public' : 'auth'] as const,
-    queryFn: (context) => getSites(context, client),
+    queryKey: [VIBE_BUILDER_QUERY_KEYS.sites, params] as const,
+    queryFn: getSites,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 };
 
-export const useGetSitePages = (params: PaginationParams, client?: GraphQLClient) => {
+export const useGetSitePages = (params: PaginationParams) => {
   return useGlobalQuery({
     suppressAuthRedirect: true,
-    queryKey: [VIBE_BUILDER_QUERY_KEYS.sitePages, params, client ? 'public' : 'auth'] as const,
-    queryFn: (context) => getSitePages(context, client),
+    queryKey: [VIBE_BUILDER_QUERY_KEYS.sitePages, params] as const,
+    queryFn: getSitePages,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 };
 
-export const useGetSitePageLayouts = (params: PaginationParams, client?: GraphQLClient) => {
+export const useGetSitePageLayouts = (params: PaginationParams) => {
   return useGlobalQuery({
     suppressAuthRedirect: true,
-    queryKey: [VIBE_BUILDER_QUERY_KEYS.sitePageLayouts, params, client ? 'public' : 'auth'] as const,
-    queryFn: (context) => getSitePageLayouts(context, client),
+    queryKey: [VIBE_BUILDER_QUERY_KEYS.sitePageLayouts, params] as const,
+    queryFn: getSitePageLayouts,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
