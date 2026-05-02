@@ -308,6 +308,51 @@ fix the limitations first]
 
 ---
 
+### [2026-05-02] — [Commit hook lint cleanup]
+- **Tool:** opencode
+- **Feature/Task:** [Fix the remaining lint blockers so the git commit hooks pass]
+- **Prompt:** > [
+benaa@BenaafPC MINGW64 /f/Github/bloxbuilder (main)
+$ git commit -m "finished lol"
+
+> bloxbuilder@0.0.1 lint
+> eslint src --ext .js,.jsx,.ts,.tsx
+
+
+F:\Github\bloxbuilder\src\modules\vibe-builder\block-definitions.tsx
+  12:3  error  'Film' is defined but never used                    @typescript-eslint/no-unused-vars
+  18:3  error  'LayoutGrid' is defined but never used              @typescript-eslint/no-unused-vars
+  22:3  error  'MenuSquare' is defined but never used              @typescript-eslint/no-unused-vars
+  31:3  error  'ShoppingBag' is defined but never used             @typescript-eslint/no-unused-vars
+  33:3  error  'SquareDashedBottomCode' is defined but never used  @typescript-eslint/no-unused-vars
+  38:3  error  'Type' is defined but never used                    @typescript-eslint/no-unused-vars
+
+F:\Github\bloxbuilder\src\modules\vibe-builder\components\vibe-builder-page-renderer.tsx
+  275:448  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  275:461  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+F:\Github\bloxbuilder\src\modules\vibe-builder\pages\vibe-builder-editor\vibe-builder-editor.tsx
+    12:12  error  'ImageIcon' is defined but never used                            @typescript-eslint/no-unused-vars
+    14:3   error  'Link2' is defined but never used                                @typescript-eslint/no-unused-vars
+    17:3   error  'Minus' is defined but never used                                @typescript-eslint/no-unused-vars
+    22:3   error  'Share2' is defined but never used                               @typescript-eslint/no-unused-vars
+    23:3   error  'StretchHorizontal' is defined but never used                    @typescript-eslint/no-unused-vars
+   365:7   error  'clampList' is assigned a value but never used                   @typescript-eslint/no-unused-vars
+   700:73  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   700:86  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  1488:13  error  'templatesBySlug' is assigned a value but never used             @typescript-eslint/no-unused-vars
+
+✖ 17 problems (17 errors, 0 warnings)
+
+husky - pre-commit script failed (code 1)
+
+benaa@BenaafPC MINGW64 /f/Github/bloxbuilder (main)
+
+fix the git error issues.]
+- **Result/Notes:** [Removed the unused imports/locals and fixed unescaped JSX quote text in the VibeBuilder files, then reran the lint command successfully so only the conventional-commit message rule remains.] 
+
+---
+
 ### [2026-05-02] — [Session handoff summary]
 - **Tool:** opencode
 - **Feature/Task:** [Summarize progress and generate a continuation prompt for a new session]
