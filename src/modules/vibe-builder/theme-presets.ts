@@ -13,6 +13,19 @@ export interface VibeBuilderThemePreset {
   accentColor: string;
   textColor: string;
   mutedTextColor: string;
+  borderColor: string;
+  buttonTextColor: string;
+  appearanceMode: 'light' | 'dark';
+  darkMode: {
+    pageBackground: string;
+    surfaceBackground: string;
+    heroBackground: string;
+    accentColor: string;
+    textColor: string;
+    mutedTextColor: string;
+    borderColor: string;
+    buttonTextColor: string;
+  };
 }
 
 export const vibeBuilderThemePresets: VibeBuilderThemePreset[] = [
@@ -29,6 +42,19 @@ export const vibeBuilderThemePresets: VibeBuilderThemePreset[] = [
     accentColor: '#0ea5a4',
     textColor: '#0f172a',
     mutedTextColor: '#64748b',
+    borderColor: '#dbe4ee',
+    buttonTextColor: '#ffffff',
+    appearanceMode: 'light',
+    darkMode: {
+      pageBackground: '#0f172a',
+      surfaceBackground: '#162033',
+      heroBackground: '#1e293b',
+      accentColor: '#2dd4bf',
+      textColor: '#f8fafc',
+      mutedTextColor: '#94a3b8',
+      borderColor: '#334155',
+      buttonTextColor: '#0f172a',
+    },
   },
   {
     id: 'aristotle',
@@ -43,6 +69,19 @@ export const vibeBuilderThemePresets: VibeBuilderThemePreset[] = [
     accentColor: '#c59a3d',
     textColor: '#231f18',
     mutedTextColor: '#6b6257',
+    borderColor: '#ddd2c0',
+    buttonTextColor: '#1f1a12',
+    appearanceMode: 'light',
+    darkMode: {
+      pageBackground: '#16120c',
+      surfaceBackground: '#221c14',
+      heroBackground: '#31271b',
+      accentColor: '#d8ae58',
+      textColor: '#f5ede1',
+      mutedTextColor: '#c1b29c',
+      borderColor: '#4a3a29',
+      buttonTextColor: '#1b140c',
+    },
   },
   {
     id: 'diplomat',
@@ -57,6 +96,19 @@ export const vibeBuilderThemePresets: VibeBuilderThemePreset[] = [
     accentColor: '#1f2937',
     textColor: '#111827',
     mutedTextColor: '#6b7280',
+    borderColor: '#ddd6ca',
+    buttonTextColor: '#ffffff',
+    appearanceMode: 'light',
+    darkMode: {
+      pageBackground: '#12151d',
+      surfaceBackground: '#1b2230',
+      heroBackground: '#2d3748',
+      accentColor: '#94a3b8',
+      textColor: '#f8fafc',
+      mutedTextColor: '#cbd5e1',
+      borderColor: '#334155',
+      buttonTextColor: '#0f172a',
+    },
   },
   {
     id: 'vision',
@@ -71,6 +123,19 @@ export const vibeBuilderThemePresets: VibeBuilderThemePreset[] = [
     accentColor: '#4f6df5',
     textColor: '#1f2937',
     mutedTextColor: '#64748b',
+    borderColor: '#d7def7',
+    buttonTextColor: '#ffffff',
+    appearanceMode: 'light',
+    darkMode: {
+      pageBackground: '#0f172a',
+      surfaceBackground: '#172554',
+      heroBackground: '#1d4ed8',
+      accentColor: '#93c5fd',
+      textColor: '#eff6ff',
+      mutedTextColor: '#bfdbfe',
+      borderColor: '#274690',
+      buttonTextColor: '#0f172a',
+    },
   },
   {
     id: 'level',
@@ -85,6 +150,19 @@ export const vibeBuilderThemePresets: VibeBuilderThemePreset[] = [
     accentColor: '#f3c14a',
     textColor: '#f8fafc',
     mutedTextColor: '#d1d5db',
+    borderColor: '#4b5563',
+    buttonTextColor: '#1f2937',
+    appearanceMode: 'light',
+    darkMode: {
+      pageBackground: '#141218',
+      surfaceBackground: '#211f28',
+      heroBackground: '#2f293a',
+      accentColor: '#fbbf24',
+      textColor: '#f8fafc',
+      mutedTextColor: '#d1d5db',
+      borderColor: '#433d50',
+      buttonTextColor: '#111827',
+    },
   },
   {
     id: 'impression',
@@ -99,6 +177,19 @@ export const vibeBuilderThemePresets: VibeBuilderThemePreset[] = [
     accentColor: '#ef4444',
     textColor: '#111827',
     mutedTextColor: '#6b7280',
+    borderColor: '#e5e7eb',
+    buttonTextColor: '#ffffff',
+    appearanceMode: 'light',
+    darkMode: {
+      pageBackground: '#111827',
+      surfaceBackground: '#1f2937',
+      heroBackground: '#111827',
+      accentColor: '#f87171',
+      textColor: '#f9fafb',
+      mutedTextColor: '#d1d5db',
+      borderColor: '#374151',
+      buttonTextColor: '#111827',
+    },
   },
 ];
 
@@ -161,13 +252,24 @@ export const parseThemeConfig = (
   const config = parseRawThemeConfig(themeConfig);
   const presetId = typeof config?.presetId === 'string' ? config.presetId : 'simple';
   const preset = vibeBuilderThemePresets.find((item) => item.id === presetId) || defaultVibeBuilderTheme;
+  const appearanceMode = config.appearanceMode === 'dark' ? 'dark' : 'light';
+  const palette = appearanceMode === 'dark' ? preset.darkMode : preset;
 
   return {
     ...preset,
+    pageBackground: palette.pageBackground,
+    surfaceBackground: palette.surfaceBackground,
+    heroBackground: palette.heroBackground,
+    accentColor: palette.accentColor,
+    textColor: palette.textColor,
+    mutedTextColor: palette.mutedTextColor,
+    borderColor: palette.borderColor,
+    buttonTextColor: palette.buttonTextColor,
     headingFont: config.fontHeading || preset.headingFont,
     bodyFont: config.fontBody || preset.bodyFont,
     headingScale: typeof config.headingScale === 'number' ? config.headingScale : preset.headingScale,
     bodyScale: typeof config.bodyScale === 'number' ? config.bodyScale : preset.bodyScale,
+    appearanceMode,
   };
 };
 

@@ -11,7 +11,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
 import { Button, buttonVariants } from '@/components/ui-kit/button';
 import {
@@ -124,6 +124,7 @@ const getMutationErrorMessage = (error: unknown) => {
 };
 
 export const VibeBuilderSiteSettingsPage = () => {
+  const { pathname } = useLocation();
   const { siteId } = useParams();
   const [isCreatePageDialogOpen, setIsCreatePageDialogOpen] = useState(false);
   const [isRenameSiteDialogOpen, setIsRenameSiteDialogOpen] = useState(false);
@@ -583,7 +584,7 @@ export const VibeBuilderSiteSettingsPage = () => {
                         </Link>
                         {site?.Slug ? (
                           <Link
-                            to={`/site/${site.Slug}/${page.Slug}`}
+                            to={`/site/${site.Slug}/${page.Slug}?preview=1&returnTo=${encodeURIComponent(pathname)}`}
                             className={buttonVariants({ variant: 'ghost', size: 'sm' })}
                           >
                             Preview route

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRight, Layers3, LayoutTemplate, Plus, Rocket, Sparkles } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { Button, buttonVariants } from '@/components/ui-kit/button';
 import {
@@ -90,6 +90,7 @@ const foundationMilestones = [
 export const VibeBuilderDashboardPage = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const { pathname } = useLocation();
   const { user, selectedOrgId, accessToken } = useAuthStore();
   const addSiteMutation = useAddSite();
   const navigate = useNavigate();
@@ -278,7 +279,7 @@ export const VibeBuilderDashboardPage = () => {
                         Open site
                       </Link>
                       <Link
-                        to={`/site/${site.Slug}`}
+                        to={`/site/${site.Slug}?preview=1&returnTo=${encodeURIComponent(pathname)}`}
                         className={buttonVariants({ variant: 'ghost', size: 'sm' })}
                       >
                         Preview route

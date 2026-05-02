@@ -251,6 +251,18 @@
 - The action now rewrites both draft and published layouts together, invalidates VibeBuilder queries, and refreshes the current editor page state so the visual editor starts from the same generated content that the public site renders.
 - This reduces confusion between draft-only editor state and published-only public rendering when seeding the AcneStudio site.
 
+### [2026-05-02] Theme dark mode added
+
+- Extended VibeBuilder theme presets so every preset now has a safe dark-mode palette with dedicated surface, border, text, muted-text, hero, and button colors.
+- Added a site-wide appearance mode control in the editor Themes panel for switching between light and dark variants of the active preset.
+- Reworked the published renderer to use theme-driven card surfaces and button colors instead of hardcoded light-only whites and app-primary colors, reducing dark-mode contrast regressions across the generated site blocks.
+
+### [2026-05-02] Homepage nav/footer made site-wide
+
+- Updated the public site renderer so the homepage’s published `Navbar` and `Footer` blocks act as shared site-wide chrome for all pages.
+- The current page body now excludes per-page navbar/footer blocks when shared homepage chrome is available, preventing mixed or duplicated chrome across routes.
+- This makes homepage navigation and footer edits the canonical site-wide source instead of each page drifting independently.
+
 ### [2026-05-01] Editor MVP started
 
 - Added `SitePageLayout` types, GraphQL queries, mutations, services, and hooks.

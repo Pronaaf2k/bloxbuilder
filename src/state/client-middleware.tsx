@@ -77,7 +77,7 @@ export const ClientMiddleware: React.FC<ClientMiddlewareProps> = ({ children }) 
   const location = useLocation();
   const currentPath = location.pathname;
   const { isMounted, isAuthenticated } = useAuthState();
-  const isPublicRoute = publicRoutes.includes(currentPath);
+  const isPublicRoute = publicRoutes.some((route) => currentPath.startsWith(route));
 
   // Check if we're processing an SSO callback (has code and state parameters)
   const urlParams = new URLSearchParams(location.search);

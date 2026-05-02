@@ -361,6 +361,52 @@ fix the git error issues.]
 
 ---
 
+### [2026-05-02] — [Per-theme dark mode]
+- **Tool:** opencode
+- **Feature/Task:** [Add a dark mode for every VibeBuilder theme without breaking palette contrast across the published site]
+- **Prompt:** > [okay can you now add a dark mode for everytheme ? make sure it doesnt break any color or texture.]
+- **Result/Notes:** [Added light/dark appearance mode support to every VibeBuilder preset, exposed the mode in the editor Themes panel, and moved major published block surfaces/buttons onto theme-driven colors so dark variants render more safely across the site.] 
+
+---
+
+### [2026-05-02] — [Homepage shared site chrome]
+- **Tool:** opencode
+- **Feature/Task:** [Make the homepage navbar and footer the consistent shared header/footer across the AcneStudio site]
+- **Prompt:** > [make sure the header and the footer and the nav bar are the same. change the homepage's nav header and footer]
+- **Result/Notes:** [Changed the live renderer so the homepage’s published navbar/footer blocks are reused as shared site-wide chrome on every page, instead of each page rendering its own separate nav/footer version.] 
+
+---
+
+### [2026-05-02] — [Public live route access]
+- **Tool:** opencode
+- **Feature/Task:** [Stop the published VibeBuilder live site from requiring login just to open `/site/...` routes]
+- **Prompt:** > [4. The Live Site Renderer
+● The "Publish" Feature: The application must be able to render a "Live" version of the
+site that is separate from the "Editor" view. Live websites should be publicly available.
+● Routing: The renderer must correctly handle navigation between the different pages
+created by the user (e.g., vibe.site/user123/home vs vibe.site/user123/about).
+
+so far this thing hasnt been implemented. my friends cant see the website ive published. only i can see it after logging in. fix this ]
+- **Result/Notes:** [Added `/site` to the public auth-route list and changed the client auth middleware to use prefix-based public-route matching so live site routes are no longer blocked by the app’s login redirect layer.] 
+
+---
+
+### [2026-05-02] — [Preview return button]
+- **Tool:** opencode
+- **Feature/Task:** [Make the editor preview route show a floating return button back to the originating editor page while keeping publish as the action that makes the site live]
+- **Prompt:** > [""add a preview button and a publish button. if i publish it goes in to the web and on the preview button i should have a floating button that takes me back to the editor page "" DID YOU NOT READ MY PROMPT ?]
+- **Result/Notes:** [Updated the editor preview link to open the live route in preview mode with editor identifiers in the query string, and added a floating `Back to editor` button on the live page when it is opened that way.] 
+
+---
+
+### [2026-05-02] — [All preview links return]
+- **Tool:** opencode
+- **Feature/Task:** [Make every VibeBuilder preview link pass its source page so the live preview can float a return button back to where it was opened from]
+- **Prompt:** > [the preview button here or any preview button should have a floating back to editor button or back to the page i clicked it from.]
+- **Result/Notes:** [Generalized preview-mode return handling by adding a `returnTo` query param and updated dashboard, site-settings, and editor preview links so the live preview’s floating button can return to the originating app page.] 
+
+---
+
 ### [2026-05-02] — [Remove broken skills submodules]
 - **Tool:** opencode
 - **Feature/Task:** [Stop CI from trying to initialize missing skill submodules under `skills-docs`]

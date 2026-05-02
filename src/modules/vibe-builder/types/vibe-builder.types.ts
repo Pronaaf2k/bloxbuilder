@@ -5,6 +5,7 @@ export type VibeBuilderBlockCategory = 'Basic' | 'Layout' | 'Media' | 'Business'
 export interface VibeBuilderThemeConfig {
   presetId?: string;
   templateId?: string;
+  appearanceMode?: 'light' | 'dark';
   palette?: string;
   fontHeading?: string;
   fontBody?: string;

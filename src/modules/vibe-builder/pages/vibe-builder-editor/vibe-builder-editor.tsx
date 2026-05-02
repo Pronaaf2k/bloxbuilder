@@ -20,7 +20,7 @@ import {
   Type,
 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { z } from 'zod';
 import { buttonVariants } from '@/components/ui-kit/button';
 import { Input } from '@/components/ui-kit/input';
@@ -884,6 +884,7 @@ const SortableBlockCard = ({
 
 export const VibeBuilderEditorPage = () => {
   const { siteId, pageId } = useParams();
+  const { pathname } = useLocation();
   const { user, selectedOrgId, accessToken } = useAuthStore();
   const currentUserId = user?.itemId || decodeJWT(accessToken || '')?.user_id || null;
   const navigate = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
@@ -1032,6 +1033,7 @@ export const VibeBuilderEditorPage = () => {
         scale.headingScale === (activeThemeConfig.headingScale ?? 1) &&
         scale.bodyScale === (activeThemeConfig.bodyScale ?? 1)
     )?.id || 'comfortable';
+  const activeAppearanceMode = activeThemeConfig.appearanceMode === 'dark' ? 'dark' : 'light';
   const latestLayout = layoutQuery.data?.items?.[0];
   const draftStorageKey = getDraftStorageKey(siteId, pageId);
   const blockIds = layoutDocument?.blocks.map((block) => block.id) ?? [];
@@ -1455,6 +1457,13 @@ export const VibeBuilderEditorPage = () => {
     });
   };
 
+  const handleAppearanceModeChange = async (mode: 'light' | 'dark') => {
+    await handleThemeConfigUpdate({
+      ...activeThemeConfig,
+      appearanceMode: mode,
+    });
+  };
+
   const handleApplyAcneStudioStarterSite = async () => {
     if (
       !siteId ||
@@ -1705,7 +1714,7 @@ export const VibeBuilderEditorPage = () => {
           </button>
           {site?.Slug && page?.Slug ? (
             <a
-              href={`/site/${site.Slug}/${page.Slug}`}
+              href={`/site/${site.Slug}/${page.Slug}?preview=1&returnTo=${encodeURIComponent(pathname)}`}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
@@ -1806,7 +1815,22 @@ export const VibeBuilderEditorPage = () => {
                           Choose a site-wide visual preset. Selecting one also replaces the current page with an editable starter layout.
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="space-y-4 pt-0">
+                    <CardContent className="space-y-4 pt-0">
+                        <div className="space-y-2">
+                          <Label>Appearance</Label>
+                          <div className="grid grid-cols-2 gap-2">
+                            {(['light', 'dark'] as const).map((mode) => (
+                              <button
+                                key={mode}
+                                type="button"
+                                onClick={() => void handleAppearanceModeChange(mode)}
+                                className={`rounded-lg border px-3 py-2 text-sm ${activeAppearanceMode === mode ? 'border-primary bg-primary/10 text-primary' : 'bg-background text-foreground'}`}
+                              >
+                                {mode === 'light' ? 'Light mode' : 'Dark mode'}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                         {vibeBuilderThemePresets.map((preset) => (
                           <button
                             key={preset.id}
