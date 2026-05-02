@@ -227,9 +227,12 @@ export const buildSitePagesFilter = (params: {
   };
 };
 
-export const getSites = async (context: QueryContext): Promise<GetSitesResponse['Sites']> => {
+export const getSites = async (
+  context: QueryContext,
+  client = graphqlClient
+): Promise<GetSitesResponse['Sites']> => {
   const [, params] = context.queryKey;
-  const response = await graphqlClient.query<GetSitesResponse>({
+  const response = await client.query<GetSitesResponse>({
     query: GET_SITES_QUERY,
     variables: {
       input: normalizeInput(params),
@@ -240,10 +243,11 @@ export const getSites = async (context: QueryContext): Promise<GetSitesResponse[
 };
 
 export const getSitePages = async (
-  context: QueryContext
+  context: QueryContext,
+  client = graphqlClient
 ): Promise<GetSitePagesResponse['SitePages']> => {
   const [, params] = context.queryKey;
-  const response = await graphqlClient.query<GetSitePagesResponse>({
+  const response = await client.query<GetSitePagesResponse>({
     query: GET_SITE_PAGES_QUERY,
     variables: {
       input: normalizeInput(params),
@@ -259,10 +263,11 @@ export const getSitePages = async (
 };
 
 export const getSitePageLayouts = async (
-  context: QueryContext
+  context: QueryContext,
+  client = graphqlClient
 ): Promise<GetSitePageLayoutsResponse['SitePageLayouts']> => {
   const [, params] = context.queryKey;
-  const response = await graphqlClient.query<GetSitePageLayoutsResponse>({
+  const response = await client.query<GetSitePageLayoutsResponse>({
     query: GET_SITE_PAGE_LAYOUTS_QUERY,
     variables: {
       input: normalizeInput(params),

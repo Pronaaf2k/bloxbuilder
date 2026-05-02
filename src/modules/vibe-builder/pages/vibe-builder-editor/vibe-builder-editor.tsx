@@ -1722,6 +1722,16 @@ export const VibeBuilderEditorPage = () => {
               Preview
             </a>
           ) : null}
+          {site?.Slug && page?.Slug ? (
+            <a
+              href={`/site/${site.Slug}/${page.Slug}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-700"
+            >
+              LIVE
+            </a>
+          ) : null}
           <Link to={`/vibe-builder/${siteId}`} className={buttonVariants({ variant: 'outline' })}>
             <ArrowLeft className="h-4 w-4" />
             Back to site

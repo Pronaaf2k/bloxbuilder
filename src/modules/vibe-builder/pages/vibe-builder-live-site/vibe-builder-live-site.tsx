@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { buttonVariants } from '@/components/ui-kit/button';
 import { VibeBuilderPageRenderer } from '@/modules/vibe-builder/components/vibe-builder-page-renderer';
 import { useGetSitePageLayouts, useGetSitePages, useGetSites } from '@/modules/vibe-builder';
+import { publicGraphqlClient } from '@/lib/graphql-client';
 import { buildSitePagesFilter } from '@/modules/vibe-builder/services/vibe-builder.service';
 
 const parseLayoutDocument = (layoutJson: string | undefined, pageId: string, pageName: string, pageSlug: string) => {
@@ -56,7 +57,7 @@ export const VibeBuilderLiveSitePage = () => {
     filter: {
       Slug: siteSlug,
     },
-  });
+  }, publicGraphqlClient);
 
   const site = siteQuery.data?.items?.[0];
 
@@ -69,7 +70,7 @@ export const VibeBuilderLiveSitePage = () => {
         })
       : { _id: '__vibebuilder_missing_site__' },
     sort: { Order: 1, CreatedDate: 1 },
-  });
+  }, publicGraphqlClient);
 
   const pages = useMemo(() => pagesQuery.data?.items ?? [], [pagesQuery.data?.items]);
   const activePage = useMemo(() => {
@@ -103,7 +104,7 @@ export const VibeBuilderLiveSitePage = () => {
           }
         : { _id: '__vibebuilder_missing_layout__' },
     sort: { LastUpdatedDate: -1, CreatedDate: -1 },
-  });
+  }, publicGraphqlClient);
 
   const latestPublishedLayout = layoutQuery.data?.items?.[0];
   const sharedChromeLayoutQuery = useGetSitePageLayouts({
@@ -118,7 +119,7 @@ export const VibeBuilderLiveSitePage = () => {
           }
         : { _id: '__vibebuilder_missing_home_layout__' },
     sort: { LastUpdatedDate: -1, CreatedDate: -1 },
-  });
+  }, publicGraphqlClient);
   const latestSharedChromeLayout = sharedChromeLayoutQuery.data?.items?.[0];
 
   if (siteQuery.isLoading || pagesQuery.isLoading || layoutQuery.isLoading || sharedChromeLayoutQuery.isLoading) {

@@ -1,5 +1,3 @@
-import { clients } from './https';
-
 /**
  * GraphQL Client Module
  *
@@ -55,29 +53,41 @@ const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
 const PROJECT_SLUG = import.meta.env.VITE_PROJECT_SLUG || '';
 
 const projectSlug = PROJECT_SLUG ? `/${PROJECT_SLUG}` : '';
-const GRAPHQL_BASE_URL = `${cleanBaseUrl}/uds/v1${projectSlug}/gateway`; //not finding
+const GRAPHQL_BASE_URL = `${cleanBaseUrl}/uds/v1${projectSlug}/gateway`;
 
-export const graphqlClient: GraphQLClient = {
+const makeGraphqlClient = (useAuth = true): GraphQLClient => ({
   async query<T>(request: GraphQLRequest): Promise<T> {
     const payload = {
       query: request.query,
       variables: request.variables || {},
     };
 
-    const response = await clients.post<GraphQLResponse<T>>(
-      GRAPHQL_BASE_URL,
-      JSON.stringify(payload),
-      {
-        'Content-Type': 'application/json',
-        'x-blocks-key': projectKey,
-      }
-    );
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'x-blocks-key': projectKey,
+    };
 
-    if (response.errors && response.errors.length > 0) {
-      throw new Error(response.errors[0].message);
+    if (useAuth) {
+      const authToken = localHostChecker ? useAuthStore.getState().accessToken : null;
+      if (authToken) {
+        headers['Authorization'] = `bearer ${authToken}`;
+      }
     }
 
-    return (response.data as T) ?? ({} as T);
+    const response = await fetch(GRAPHQL_BASE_URL, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payload),
+      referrerPolicy: 'no-referrer',
+    });
+
+    const result: GraphQLResponse<T> = await response.json();
+
+    if (result.errors && result.errors.length > 0) {
+      throw new Error(result.errors[0].message);
+    }
+
+    return (result.data as T) ?? ({} as T);
   },
 
   async mutate<T>(request: GraphQLRequest): Promise<T> {
@@ -86,21 +96,36 @@ export const graphqlClient: GraphQLClient = {
       variables: request.variables || {},
     };
 
-    const response = await clients.post<GraphQLResponse<T>>(
-      GRAPHQL_BASE_URL,
-      JSON.stringify(payload),
-      {
-        'Content-Type': 'application/json',
-        'x-blocks-key': projectKey,
-      }
-    );
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'x-blocks-key': projectKey,
+    };
 
-    if (response.errors && response.errors.length > 0) {
-      throw new Error(response.errors[0].message);
+    if (useAuth) {
+      const authToken = localHostChecker ? useAuthStore.getState().accessToken : null;
+      if (authToken) {
+        headers['Authorization'] = `bearer ${authToken}`;
+      }
     }
 
-    return response.data as T;
+    const response = await fetch(GRAPHQL_BASE_URL, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payload),
+      referrerPolicy: 'no-referrer',
+    });
+
+    const result: GraphQLResponse<T> = await response.json();
+
+    if (result.errors && result.errors.length > 0) {
+      throw new Error(result.errors[0].message);
+    }
+
+    return result.data as T;
   },
-};
+});
+
+export const graphqlClient = makeGraphqlClient(true);
+export const publicGraphqlClient = makeGraphqlClient(false);
 
 export default graphqlClient;

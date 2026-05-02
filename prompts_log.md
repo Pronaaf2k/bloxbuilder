@@ -509,7 +509,15 @@ if i press the button on preview it sends me to http://localhost:3000/steinyacne
 - **Prompt:** > [react-dom_client.js?v=54a1f241:20103 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
 api.seliseblocks.com/uds/v1/pbhtqy/gateway:1  Failed to load resource: the server responded with a status of 401 ()
 ... it logs me out when i try to edit a page. whatever you broke this time fix it.]
-- **Result/Notes:** [Added a `suppressAuthRedirect` option to the shared query/mutation wrappers and enabled it for VibeBuilder hooks so gateway auth failures no longer immediately log the user out during editing.] 
+- **Result/Notes:** [Added a `suppressAuthRedirect` option to the shared query/mutation wrappers and enabled it for VibeBuilder hooks so gateway auth failures no longer immediately log the user out during editing.]
+
+---
+
+### [2026-05-03] — [Blocks and themes listing + public site 401 fix + LIVE button]
+- **Tool:** opencode
+- **Feature/Task:** [List all blocks and themes for the user, fix public site 401 errors, and add a LIVE button to open the live site in a new tab]
+- **Prompt:** > [list the blocks and themes and what they do im going to build a website using it. dont touch anything on the directory. What did we do so far? ... api.seliseblocks.com/uds/v1/pbhtqy/gateway:1 Failed to load resource: the server responded with a status of 401 () this is what it shows when i try to access the published websites without logging in. ... did you not log the prompt? also can you add a "LIVE" button that takes me to the live site in a new tab?]
+- **Result/Notes:** [Listed all 28 blocks across 5 categories and 5 theme presets with descriptions. Fixed public site 401 by creating a publicGraphqlClient that skips auth headers, updated hooks and live site page to use it. Logged this prompt to prompts_log.md. Next: add LIVE button to editor.] 
 
 ---
 
