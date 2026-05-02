@@ -85,6 +85,7 @@ export class HttpError extends Error {
 const BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '');
 const projectKey = import.meta.env.VITE_X_BLOCKS_KEY ?? '';
 const localHostChecker = isLocalhost();
+let refreshTokenRequest: Promise<any> | null = null;
 
 export const clients: Https = {
   async get<T>(url: string, headers: HeadersInit = {}): Promise<T> {
@@ -193,13 +194,27 @@ export const clients: Https = {
       throw new HttpError(401, { error: 'invalid_request' });
     }
 
-    const refreshTokenRes = await getRefreshToken();
+    if (!refreshTokenRequest) {
+      refreshTokenRequest = getRefreshToken().finally(() => {
+        refreshTokenRequest = null;
+      });
+    }
+
+    const refreshTokenRes = await refreshTokenRequest;
 
     if (refreshTokenRes.error === 'invalid_request') {
       throw new HttpError(401, refreshTokenRes);
     }
 
-    authStore.setAccessToken(refreshTokenRes.access_token);
+    if (refreshTokenRes.access_token && refreshTokenRes.refresh_token) {
+      authStore.setTokens({
+        accessToken: refreshTokenRes.access_token,
+        refreshToken: refreshTokenRes.refresh_token,
+      });
+    } else {
+      authStore.setAccessToken(refreshTokenRes.access_token);
+    }
+
     return this.request<T>(url, { method, headers, body });
   },
 };

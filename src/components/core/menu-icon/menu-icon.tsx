@@ -84,6 +84,11 @@ interface MenuIconProps extends Omit<LucideProps, 'ref'> {
 }
 
 export const MenuIcon = ({ name, ...props }: Readonly<MenuIconProps>) => {
-  const LucideIcon = iconMap[name];
+  const LucideIcon = iconMap[name] ?? CircleHelp;
+
+  if (typeof LucideIcon !== 'function' && typeof LucideIcon !== 'object') {
+    return <CircleHelp {...props} />;
+  }
+
   return <LucideIcon {...props} />;
 };

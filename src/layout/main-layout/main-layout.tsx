@@ -12,6 +12,8 @@ import {
   ThemeSwitcher,
   OrgSwitcher,
 } from '@/components/core';
+import { useAuthStore } from '@/state/store/auth';
+import { decodeJWT } from '@/lib/utils/decode-jwt-utils';
 
 type NotificationsData = {
   notifications: any[];
@@ -26,11 +28,14 @@ export const MainLayout = () => {
   const firstSegment = segments?.[0] ?? undefined;
   const isEmailRoute = firstSegment === 'mail';
   const isChatRoute = firstSegment === 'chat';
+  const isVibeBuilderRoute = firstSegment === 'vibe-builder';
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const decodedToken = accessToken ? decodeJWT(accessToken) : null;
 
   const { data: notificationsData } = useGetNotifications({
     Page: 0,
     PageSize: 10,
-  });
+  }, !isVibeBuilderRoute);
 
   const notifications: NotificationsData = notificationsData ?? {
     notifications: [],
@@ -66,27 +71,29 @@ export const MainLayout = () => {
             {/* <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
               <Library className="!w-5 !h-5 text-medium-emphasis" />
             </Button> */}
-            <Menubar className="border-none p-0">
-              <MenubarMenu>
-                <MenubarTrigger
-                  asChild
-                  className="cursor-pointer focus:bg-transparent data-[state=open]:bg-transparent p-0"
-                >
-                  <div className="relative">
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
-                      <Bell className="!w-5 !h-5 text-medium-emphasis" />
-                    </Button>
-                    {notifications.unReadNotificationsCount > 0 && (
-                      <div className="w-2 h-2 bg-error rounded-full absolute top-[13px] right-[20px]" />
-                    )}
-                  </div>
-                </MenubarTrigger>
-                <Notification />
-              </MenubarMenu>
-            </Menubar>
+            {!isVibeBuilderRoute ? (
+              <Menubar className="border-none p-0">
+                <MenubarMenu>
+                  <MenubarTrigger
+                    asChild
+                    className="cursor-pointer focus:bg-transparent data-[state=open]:bg-transparent p-0"
+                  >
+                    <div className="relative">
+                      <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
+                        <Bell className="!w-5 !h-5 text-medium-emphasis" />
+                      </Button>
+                      {notifications.unReadNotificationsCount > 0 && (
+                        <div className="w-2 h-2 bg-error rounded-full absolute top-[13px] right-[20px]" />
+                      )}
+                    </div>
+                  </MenubarTrigger>
+                  <Notification />
+                </MenubarMenu>
+              </Menubar>
+            ) : null}
             <LanguageSelector />
-            <OrgSwitcher />
-            <ProfileMenu />
+            {!isVibeBuilderRoute ? <OrgSwitcher /> : null}
+            {!isVibeBuilderRoute ? <ProfileMenu /> : decodedToken?.user_id ? <div className="h-8 w-8 rounded-full border bg-muted" /> : null}
           </div>
         </div>
         <div

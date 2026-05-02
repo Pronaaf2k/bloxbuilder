@@ -16,10 +16,11 @@ export const useChangePassword = () => {
   });
 };
 
-export const useGetAccount = () => {
+export const useGetAccount = (enabled = true) => {
   return useQuery({
     queryKey: ['getAccount'],
     queryFn: getAccount,
+    enabled,
     retry: (failureCount, error: any) => {
       if (error?.response?.status === 403) {
         return false;

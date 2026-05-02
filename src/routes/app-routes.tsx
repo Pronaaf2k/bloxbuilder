@@ -17,6 +17,12 @@ import {
 import { TaskManagerPage } from '@/modules/task-manager';
 import { ProfilePage } from '@/modules/profile';
 import { UsersTablePage } from '@/modules/iam';
+import {
+  VibeBuilderDashboardPage,
+  VibeBuilderEditorPage,
+  VibeBuilderLiveSitePage,
+  VibeBuilderSiteSettingsPage,
+} from '@/modules/vibe-builder';
 import { MainLayout } from '@/layout/main-layout/main-layout';
 import { AuthRoutes } from './auth.route';
 import { Guard } from '@/state/store/auth/guard';
@@ -75,6 +81,12 @@ export const AppRoutes = () => {
                 <Route path="/mail/:category/:emailId" element={<EmailPage />} />
                 <Route path="/mail/:category/:labels/:emailId" element={<EmailPage />} />
                 <Route path="/identity-management" element={<UsersTablePage />} />
+                <Route path="/vibe-builder" element={<VibeBuilderDashboardPage />} />
+                <Route path="/vibe-builder/:siteId" element={<VibeBuilderSiteSettingsPage />} />
+                <Route
+                  path="/vibe-builder/:siteId/editor/:pageId"
+                  element={<VibeBuilderEditorPage />}
+                />
                 <Route path="/task-manager" element={<TaskManagerPage />} />
                 <Route
                   path="/chat"
@@ -104,6 +116,8 @@ export const AppRoutes = () => {
 
               {/* Redirects */}
               <Route path="/" element={<Navigate to="/dashboard" />} />
+              <Route path="/site/:siteSlug" element={<VibeBuilderLiveSitePage />} />
+              <Route path="/site/:siteSlug/:pageSlug" element={<VibeBuilderLiveSitePage />} />
               <Route path="/file-manager" element={<Navigate to="/file-manager/my-files" />} />
               <Route path="/my-files" element={<Navigate to="/file-manager/my-files" />} />
               <Route path="/shared-files" element={<Navigate to="/file-manager/shared-files" />} />

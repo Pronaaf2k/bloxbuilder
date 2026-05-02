@@ -61,6 +61,9 @@ const handleSessionExpiration = (
   setTimeout(() => {
     logout();
     navigate('/login');
+    if (window.location.pathname !== '/login') {
+      window.location.assign('/login');
+    }
 
     const overlay = document.getElementById('session-expired-overlay');
     if (overlay) {
@@ -91,6 +94,7 @@ type GlobalQueryOptions<TQueryFnData, TError, TData, TQueryKey extends QueryKey>
   messageMap?: Record<string, string>;
   variant?: ToastVariant;
   duration?: number;
+  suppressAuthRedirect?: boolean;
   onError?: (error: TError) => void;
 };
 
@@ -122,7 +126,11 @@ export const useGlobalQuery = <
       const err = queryResult.error as any;
       const apiError = processApiError(err);
 
-      if (apiError.error?.error === 'invalid_refresh_token' && !isPublicRoute) {
+      if (
+        apiError.error?.error === 'invalid_refresh_token' &&
+        !isPublicRoute &&
+        !options.suppressAuthRedirect
+      ) {
         handleSessionExpiration(logout, navigate, handleError);
       } else {
         handleError(apiError, {
@@ -182,6 +190,7 @@ export type GlobalMutationOptions<
   TContext = unknown,
 > = UseMutationOptions<TData, TError, TVariables, TContext> & {
   suppressToast?: boolean;
+  suppressAuthRedirect?: boolean;
 };
 
 export const useGlobalMutation = <
@@ -202,7 +211,7 @@ export const useGlobalMutation = <
       const err = errorData as any;
       const apiError = processApiError(err);
 
-      if (apiError.error?.error === 'invalid_refresh_token') {
+      if (apiError.error?.error === 'invalid_refresh_token' && !option.suppressAuthRedirect) {
         handleSessionExpiration(logout, navigate, handleError);
         return;
       }

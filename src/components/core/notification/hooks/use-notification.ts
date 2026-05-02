@@ -13,10 +13,11 @@ import { useToast } from '@/hooks/use-toast';
  * @param params - Query parameters for filtering and pagination
  * @returns Query result with notifications and metadata
  */
-export const useGetNotifications = (params: GetNotificationsParams) => {
+export const useGetNotifications = (params: GetNotificationsParams, enabled = true) => {
   return useQuery({
     queryKey: ['notifications', params],
     queryFn: getNotifications,
+    enabled,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,

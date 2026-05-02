@@ -46,6 +46,9 @@ export const menuItems: MenuItem[] = [
   createMenuItem('task-manager', 'TASK_MANAGER', '/task-manager', 'Presentation', {
     isIntegrated: true,
   }),
+  createMenuItem('vibe-builder', 'VIBE_BUILDER', '/vibe-builder', 'Presentation', {
+    isIntegrated: true,
+  }),
   createMenuItem('mail', 'MAIL', '/mail/inbox', 'Inbox'),
   createMenuItem('calendar', 'CALENDAR', '/calendar', 'Calendar'),
   createMenuItem('activity-log', 'ACTIVITY_LOG', '/activity-log', 'FileClock', {}),

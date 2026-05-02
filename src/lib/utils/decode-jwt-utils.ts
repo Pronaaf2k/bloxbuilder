@@ -12,7 +12,7 @@
  * @param token - JWT access token string
  * @returns Decoded payload with `org_id`, or `null` if decoding fails
  */
-export const decodeJWT = (token: string): { org_id?: string } | null => {
+export const decodeJWT = (token: string): { org_id?: string; user_id?: string } | null => {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
