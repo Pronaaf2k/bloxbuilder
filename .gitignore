@@ -62,3 +62,8 @@ Thumbs.db
 
 *storybook.log
 storybook-static
+
+# Local external skill repositories
+skills-docs/*/
+!skills-docs/*.md
+!skills-docs/README.md
